@@ -3,15 +3,25 @@ import "./App.css";
 import postsData from "./posts.json";
 import authorsData from "./authors.json";
 import moment from "moment";
-import "bulma/css/bulma.css";
+import Pagination from "react-paginating";
+
+const limit = 8;
+const pageCount = 8;
+const total = postsData.length * limit;
 
 class App extends Component {
   state = {
     posts: postsData,
-    authors: authorsData
+    authors: authorsData,
+    currentPage: 1
   };
-
+  handlePageChange = page => {
+    this.setState({
+      currentPage: page
+    });
+  };
   render() {
+    const { currentPage, posts } = this.state;
     return (
       <div className="container">
         <div className="title">
@@ -20,7 +30,7 @@ class App extends Component {
           <h5>Posts</h5>
         </div>
         <ul className="post-content">
-          {this.state.posts.map(post => {
+          {posts[currentPage - 1].map(post => {
             return (
               <div key={post.id} className="post">
                 <div className="post-image">
@@ -53,29 +63,84 @@ class App extends Component {
             );
           })}
         </ul>
-        <nav>
-          <ul class="pagination-list">
-            <li>
-              <a
-                class="pagination-link is-current"
-                aria-label="Page 1"
-                aria-current="page"
+        <Pagination
+          total={total}
+          limit={limit}
+          pageCount={pageCount}
+          currentPage={currentPage}
+        >
+          {({
+            pages,
+            currentPage,
+            hasNextPage,
+            hasPreviousPage,
+            previousPage,
+            nextPage,
+            totalPages,
+            getPageItemProps
+          }) => (
+            <div>
+              <button
+                {...getPageItemProps({
+                  pageValue: 1,
+                  onPageChange: this.handlePageChange
+                })}
               >
-                1
-              </a>
-            </li>
-            <li>
-              <a class="pagination-link" aria-label="Goto page 2">
-                2
-              </a>
-            </li>
-            <li>
-              <a class="pagination-link" aria-label="Goto page 3">
-                3
-              </a>
-            </li>
-          </ul>
-        </nav>
+                Previous
+              </button>
+
+              {hasPreviousPage && (
+                <button
+                  {...getPageItemProps({
+                    pageValue: previousPage,
+                    onPageChange: this.handlePageChange
+                  })}
+                >
+                  {"<"}
+                </button>
+              )}
+
+              {pages.map(page => {
+                let activePage = null;
+                if (currentPage === page) {
+                  activePage = { backgroundColor: "#fdce09" };
+                }
+                return (
+                  <button
+                    key={page}
+                    style={activePage}
+                    {...getPageItemProps({
+                      pageValue: page,
+                      onPageChange: this.handlePageChange
+                    })}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+
+              {hasNextPage && (
+                <button
+                  {...getPageItemProps({
+                    pageValue: nextPage,
+                    onPageChange: this.handlePageChange
+                  })}
+                >
+                  {">"}
+                </button>
+              )}
+
+              <button
+                {...getPageItemProps({
+                  pageValue: totalPages,
+                  onPageChange: this.handlePageChange
+                })}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </Pagination>
       </div>
     );
   }
