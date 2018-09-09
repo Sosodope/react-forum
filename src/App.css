@@ -1,0 +1,64 @@
+html,
+body {
+  font-family: sans-serif;
+}
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.post {
+  display: grid;
+  grid-template-columns: 2fr 8fr 2fr;
+  grid-gap: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 10px 15px;
+  height: 30%;
+  margin-bottom: 10px;
+  align-items: start;
+  box-shadow: 1px 5px 6px -4px #bbb;
+}
+.post:nth-child(even) {
+  background: #f0f0f0;
+}
+.post p {
+  font-size: 0.75em;
+  color: #66676a;
+}
+.post-details h4 {
+  margin-top: 0;
+}
+.post-image img {
+  width: 100%;
+}
+.author-info {
+  border-left: 1px solid #ccc;
+  padding: 10px 30px;
+  text-align: center;
+}
+.author-info img {
+  width: 65%;
+  border-radius: 50%;
+}
+.author-info p {
+  color: #333333;
+}
+.author-info .author-name {
+  font-weight: bold;
+  color: #cc4240;
+}
+.author-place > * {
+  font-size: 0.85em;
+}
+.author-location,
+.post-date-time {
+  margin-left: 5px;
+}
+.post-details .post-date {
+  color: #aaa;
+  font-style: italic;
+}
+.title {
+  padding-left: 5px;
+}
